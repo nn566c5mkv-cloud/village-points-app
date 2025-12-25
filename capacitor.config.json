@@ -1,0 +1,13 @@
+{
+  "appId": "com.village.pointsapp",
+  "appName": "村规民约积分查询",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "http://localhost:3000",
+    "cleartext": true
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}

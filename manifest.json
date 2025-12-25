@@ -1,0 +1,39 @@
+{
+  "name": "村规民约积分查询系统",
+  "short_name": "村规查询",
+  "description": "村庄规章制度与居民积分管理系统",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f0f7f4",
+  "theme_color": "#2d6a4f",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["utilities", "lifestyle"],
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "积分查询",
+      "short_name": "积分",
+      "description": "查看个人积分",
+      "url": "/?tab=points",
+      "icons": [{"src": "icons/icon.svg", "sizes": "96x96"}]
+    },
+    {
+      "name": "积分兑换",
+      "short_name": "兑换",
+      "description": "积分商品兑换",
+      "url": "/?tab=exchange",
+      "icons": [{"src": "icons/icon.svg", "sizes": "96x96"}]
+    }
+  ]
+}

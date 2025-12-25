@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#2d6a4f">
+    <meta name="description" content="村庄规章制度与居民积分管理系统">
+    <meta name="apple-mobile-web-app-title" content="村规查询">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
+    <title>村规民约积分查询系统</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/icons.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 登录页面 -->
+        <div id="loginPage" class="page active">
+            <div class="login-container">
+                <div class="login-header">
+                    <div class="logo">
+                        <i class="fas fa-village"></i>
+                    </div>
+                    <h1>村规民约积分查询</h1>
+                    <p>登录您的账户</p>
+                </div>
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="username">
+                            <i class="fas fa-user"></i>
+                            用户名
+                        </label>
+                        <input type="text" id="username" name="username" placeholder="请输入用户名" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fas fa-lock"></i>
+                            密码
+                        </label>
+                        <input type="password" id="password" name="password" placeholder="请输入密码" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        登录
+                    </button>
+                </form>
+                <div class="login-footer">
+                    <p>演示账号: <strong>user1</strong> / <strong>123456</strong></p>
+                    <p>管理员账号: <strong>admin</strong> / <strong>admin123</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主页面 -->
+        <div id="mainPage" class="page">
+            <!-- 顶部导航 -->
+            <header class="header">
+                <div class="header-title">
+                    <h1 id="pageTitle">首页</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon" id="logoutBtn" title="退出登录">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- 内容区域 -->
+            <main class="content">
+                <!-- 首页 -->
+                <div id="homeTab" class="tab-content active">
+                    <div class="welcome-card">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="user-info">
+                            <h2 id="userName">村民姓名</h2>
+                            <p id="userVillage">所属村庄</p>
+                        </div>
+                    </div>
+
+                    <div class="points-card">
+                        <div class="points-header">
+                            <h3>当前积分</h3>
+                            <span class="points-rank" id="pointsRank">第 1 名</span>
+                        </div>
+                        <div class="points-value" id="totalPoints">100</div>
+                        <div class="points-trend up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>较上季度 +5 分</span>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions">
+                        <h3>快捷操作</h3>
+                        <div class="action-grid">
+                            <div class="action-item" data-action="query">
+                                <div class="action-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <span>积分查询</span>
+                            </div>
+                            <div class="action-item" data-action="history">
+                                <div class="action-icon">
+                                    <i class="fas fa-history"></i>
+                                </div>
+                                <span>历史记录</span>
+                            </div>
+                            <div class="action-item" data-action="rules">
+                                <div class="action-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <span>村规民约</span>
+                            </div>
+                            <div class="action-item" data-action="profile">
+                                <div class="action-icon">
+                                    <i class="fas fa-user-cog"></i>
+                                </div>
+                                <span>个人信息</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h3>最近动态</h3>
+                        <div class="activity-list" id="activityList">
+                            <!-- 动态列表 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 积分查询页 -->
+                <div id="queryTab" class="tab-content">
+                    <div class="search-section">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="搜索积分记录...">
+                        </div>
+                        <div class="filter-btns">
+                            <button class="filter-btn active" data-filter="all">全部</button>
+                            <button class="filter-btn" data-filter="add">加分</button>
+                            <button class="filter-btn" data-filter="deduct">扣分</button>
+                        </div>
+                    </div>
+                    <div class="points-list" id="pointsList">
+                        <!-- 积分列表 -->
+                    </div>
+                </div>
+
+                <!-- 历史记录页 -->
+                <div id="historyTab" class="tab-content">
+                    <div class="date-filter">
+                        <div class="date-input">
+                            <label>开始日期</label>
+                            <input type="date" id="startDate">
+                        </div>
+                        <div class="date-input">
+                            <label>结束日期</label>
+                            <input type="date" id="endDate">
+                        </div>
+                        <button class="btn-secondary" id="filterDateBtn">查询</button>
+                    </div>
+                    <div class="history-summary">
+                        <div class="summary-item">
+                            <span class="summary-label">总积分</span>
+                            <span class="summary-value" id="historyTotal">0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">加分次数</span>
+                            <span class="summary-value add" id="historyAdd">0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">扣分次数</span>
+                            <span class="summary-value deduct" id="historyDeduct">0</span>
+                        </div>
+                    </div>
+                    <div class="points-list" id="historyList">
+                        <!-- 历史列表 -->
+                    </div>
+                </div>
+
+                <!-- 村规民约页 -->
+                <div id="rulesTab" class="tab-content">
+                    <div class="rules-categories">
+                        <button class="category-btn active" data-category="all">全部</button>
+                        <button class="category-btn" data-category="public">公共秩序</button>
+                        <button class="category-btn" data-category="environment">环境卫生</button>
+                        <button class="category-btn" data-category="civil">邻里互助</button>
+                        <button class="category-btn" data-category="other">其他规定</button>
+                    </div>
+                    <div class="rules-list" id="rulesList">
+                        <!-- 村规民约列表 -->
+                    </div>
+                </div>
+
+                <!-- 积分兑换页 -->
+                <div id="exchangeTab" class="tab-content">
+                    <div class="exchange-header">
+                        <div class="my-points">
+                            <span class="points-label">我的积分</span>
+                            <span class="points-value" id="myExchangePoints">0</span>
+                        </div>
+                    </div>
+                    <div class="exchange-categories">
+                        <button class="category-btn active" data-exchange-category="all">全部</button>
+                        <button class="category-btn" data-exchange-category="food">粮油副食</button>
+                        <button class="category-btn" data-exchange-category="daily">日用百货</button>
+                        <button class="category-btn" data-exchange-category="home">家居用品</button>
+                        <button class="category-btn" data-exchange-category="culture">文化教育</button>
+                        <button class="category-btn" data-exchange-category="health">健康医疗</button>
+                    </div>
+                    <div class="exchange-list" id="exchangeList">
+                        <!-- 兑换物品列表 -->
+                    </div>
+                </div>
+
+                <!-- 个人信息页 -->
+                <div id="profileTab" class="tab-content">
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <h2 id="profileName">村民姓名</h2>
+                            <p class="profile-id">ID: <span id="profileId">001</span></p>
+                        </div>
+                        <div class="profile-info">
+                            <div class="info-item">
+                                <label>所属村庄</label>
+                                <span id="profileVillage">幸福村</span>
+                            </div>
+                            <div class="info-item">
+                                <label>联系电话</label>
+                                <span id="profilePhone">138****8888</span>
+                            </div>
+                            <div class="info-item">
+                                <label>注册时间</label>
+                                <span id="profileRegister">2024-01-01</span>
+                            </div>
+                            <div class="info-item">
+                                <label>当前等级</label>
+                                <span id="profileLevel">优秀村民</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="level-progress">
+                        <h3>等级进度</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="levelProgress"></div>
+                        </div>
+                        <div class="level-info">
+                            <span id="currentLevel">优秀村民</span>
+                            <span id="nextLevel">还需 20 分升级到模范村民</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-actions">
+                        <button class="btn-secondary" id="changePasswordBtn">
+                            <i class="fas fa-key"></i>
+                            修改密码
+                        </button>
+                        <button class="btn-secondary" id="feedbackBtn">
+                            <i class="fas fa-comment-dots"></i>
+                            意见反馈
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 管理员仪表盘Tab -->
+                <div id="adminTab" class="tab-content">
+                    <div class="admin-header">
+                        <div class="admin-avatar">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="admin-info">
+                            <h2 id="adminWelcome">管理员</h2>
+                            <p id="adminRole">超级管理员</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="totalVillagers">0</span>
+                                <span class="stat-label">村民总数</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon active">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="activeVillagers">0</span>
+                                <span class="stat-label">活跃村民</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon points">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="totalPoints">0</span>
+                                <span class="stat-label">总积分</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon avg">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="avgPoints">0</span>
+                                <span class="stat-label">平均积分</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h3>本月积分统计</h3>
+                        <div class="month-stats">
+                            <div class="month-stat add">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>加分</span>
+                                <strong id="monthAddPoints">0</strong>
+                            </div>
+                            <div class="month-stat deduct">
+                                <i class="fas fa-minus-circle"></i>
+                                <span>扣分</span>
+                                <strong id="monthDeductPoints">0</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h3>积分分布</h3>
+                        <div class="chart-container" id="pointsChart">
+                        </div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h3>村民管理</h3>
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="villagerSearchInput" placeholder="搜索村民...">
+                        </div>
+                        <div class="villager-list" id="villagerList">
+                        </div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h3>积分记录</h3>
+                        <div class="points-records-list" id="pointsRecordsList">
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- 底部导航 -->
+            <nav class="bottom-nav">
+                <div class="nav-item active" data-tab="home">
+                    <i class="fas fa-home"></i>
+                    <span>首页</span>
+                </div>
+                <div class="nav-item" data-tab="query">
+                    <i class="fas fa-search"></i>
+                    <span>查询</span>
+                </div>
+                <div class="nav-item" data-tab="history">
+                    <i class="fas fa-history"></i>
+                    <span>历史</span>
+                </div>
+                <div class="nav-item" data-tab="rules">
+                    <i class="fas fa-book"></i>
+                    <span>村规</span>
+                </div>
+                <div class="nav-item" data-tab="exchange">
+                    <i class="fas fa-gift"></i>
+                    <span>兑换</span>
+                </div>
+                <div class="nav-item admin-only villager-only" data-tab="profile">
+                    <i class="fas fa-user"></i>
+                    <span>我的</span>
+                </div>
+                <div class="nav-item admin-only" data-tab="admin">
+                    <i class="fas fa-cogs"></i>
+                    <span>管理</span>
+                </div>
+            </nav>
+        </div>
+
+        <!-- 积分详情弹窗 -->
+        <div id="pointsDetailModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>积分详情</h3>
+                    <button class="modal-close" id="closePointsModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="pointsDetailContent">
+                    <!-- 详情内容 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 村规详情弹窗 -->
+        <div id="ruleDetailModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>村规详情</h3>
+                    <button class="modal-close" id="closeRuleModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="ruleDetailContent">
+                    <!-- 详情内容 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 村民详情弹窗 -->
+        <div id="villagerDetailModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>村民详情</h3>
+                    <button class="modal-close" id="closeVillagerDetailModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="villagerDetailContent">
+                    <!-- 详情内容 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 积分兑换弹窗 -->
+        <div id="exchangeModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>确认兑换</h3>
+                    <button class="modal-close" id="closeExchangeModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="exchangeModalContent">
+                    <!-- 兑换详情内容 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 兑换记录弹窗 -->
+        <div id="exchangeRecordsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>我的兑换记录</h3>
+                    <button class="modal-close" id="closeExchangeRecordsModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="exchangeRecordsContent">
+                    <!-- 兑换记录内容 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 提示框 -->
+        <div id="toast" class="toast">
+            <span id="toastMessage"></span>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

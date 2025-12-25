@@ -1,0 +1,25 @@
+.fas {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+}
+
+.fas.fa-village::before { content: "🏘"; }
+.fas.fa-user::before { content: "👤"; }
+.fas.fa-lock::before { content: "🔒"; }
+.fas.fa-sign-in-alt::before { content: "→"; }
+.fas.fa-sign-out-alt::before { content: "←"; }
+.fas.fa-user-circle::before { content: "👤"; font-size: 1.2em; }
+.fas.fa-arrow-up::before { content: "↑"; }
+.fas.fa-search::before { content: "🔍"; }
+.fas.fa-history::before { content: "📋"; }
+.fas.fa-book::before { content: "📖"; }
+.fas.fa-user-cog::before { content: "⚙"; }
+.fas.fa-home::before { content: "🏠"; }
+.fas.fa-times::before { content: "✕"; }
+.fas.fa-plus-circle::before { content: "✓"; }
+.fas.fa-minus-circle::before { content: "✗"; }
+.fas.fa-key::before { content: "🔑"; }
+.fas.fa-comment-dots::before { content: "💬"; }
